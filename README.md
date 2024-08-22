@@ -24,6 +24,24 @@ A minimalistic logging tool designed specifically for use with Deno, supporting 
 1. Install deno: https://deno.com
 2. `deno add @studiowebux/deno-minilog`
 
+
+```ts
+const logger = new Logger(); // Logs everything by default
+logger.info("This is an info log");
+logger.info({ foo: "bar" });
+logger.error(new Error("Oops"))
+logger.warn("You should check the logs...")
+```
+
+```ts
+const logger = new Logger({info: false});
+logger.info("This info wont be showed.");
+logger.error(new Error("Oops"))
+logger.warn("You should check the logs...")
+```
+
+see `tests/test.ts` for other examples.
+
 ---
 
 ### Releases and Github Actions
