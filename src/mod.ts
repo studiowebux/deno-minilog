@@ -6,7 +6,8 @@
 import { Color } from "./colors.ts";
 
 type Level = "error" | "warn" | "info";
-type Config = Record<Level, boolean>;
+type Format = "json" | "text";
+type Config = Record<Level, boolean> & { format: Format };
 
 /**
  * A Logger class for logging messages with different levels (error, warn, info).
@@ -21,6 +22,7 @@ export default class Logger {
     error: true,
     warn: true,
     info: true,
+    format: "text",
   };
 
   /**
@@ -35,10 +37,9 @@ export default class Logger {
    * Logs a message with the specified level.
    * @private
    * @param {Level} level - The log level ("error", "warn", or "info").
-   * @param {unknown} message - The main message to be logged.
-   * @param {...unknown[]} args - Additional arguments to be logged.
+   * @param {...unknown[]} args - arguments to be logged.
    */
-  private log(level: Level, message: unknown, ...args: unknown[]): void {
+  private log(level: Level, ...args: unknown[]): void {
     // If the level is disabled, we don't log anything
     if (!this.config[level]) return;
 
@@ -53,24 +54,30 @@ export default class Logger {
       }
     });
 
-    const formattedMessage: string =
-      typeof message === "string"
-        ? message
-        : message instanceof Error
-          ? this.formatError(message)
-          : JSON.stringify(message);
-
-    console[level](
-      Color(
+    if (this.config.format === "text") {
+      console[level](
         Color(
-          `${new Date().toLocaleString()} ${level.toUpperCase()}: `,
-          "Bold",
+          Color(
+            `${new Date().toLocaleString()} ${level.toUpperCase()}: `,
+            "Bold",
+          ),
+          level === "error"
+            ? "FgRed"
+            : level === "warn"
+              ? "FgYellow"
+              : "FgGreen",
         ),
-        level === "error" ? "FgRed" : level === "warn" ? "FgYellow" : "FgGreen",
-      ),
-      formattedMessage,
-      msg,
-    );
+        msg,
+      );
+    } else if (this.config.format === "json") {
+      console[level](
+        JSON.stringify({
+          message: msg,
+          level: level,
+          timestamp: new Date().toLocaleString(),
+        }),
+      );
+    }
   }
 
   /**

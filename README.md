@@ -15,7 +15,12 @@
 
 ## About
 
-A minimalistic logging tool designed specifically for use with Deno, supporting essential log levels such as `info`, `warn`, and `error`. This logger outputs to the terminal, displaying messages with a prefix that includes the current local date and time. It allows users to easily toggle the enabled log level, providing flexibility based on their preference or application needs.
+A minimalistic logging tool designed specifically for use with Deno,
+supporting essential log levels such as `info`, `warn`, and `error`.
+This logger outputs to the terminal in either `text` or `json` format,
+displaying messages with a prefix that includes the current local date and time.
+It allows users to easily toggle the enabled log level and change the output format,
+providing flexibility based on their preference or application needs.
 
 ---
 
@@ -38,6 +43,15 @@ const logger = new Logger({info: false});
 logger.info("This info wont be showed.");
 logger.error(new Error("Oops"))
 logger.warn("You should check the logs...")
+```
+
+You can set the format to `json`, *usually required with observability tools.*
+
+```ts
+const jsonLogger = new Logger({ format: "json" });
+
+// Prints
+{"message":"...","level":"...","timestamp":"..."}
 ```
 
 see `tests/test.ts` for other examples.

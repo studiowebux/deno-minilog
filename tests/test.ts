@@ -22,3 +22,11 @@ try {
 } catch (e: unknown) {
   specialLogger.error(e as Error);
 }
+
+const jsonLogger = new Logger({ format: "json" });
+jsonLogger.info("should be hidden");
+jsonLogger.warn("This is a warning", { someKey: "Some value" });
+jsonLogger.warn({ foo: "bar" });
+jsonLogger.error(
+  new Error("An error occurred and should print only this message"),
+);
