@@ -1,0 +1,5 @@
+{
+  "name": "@studiowebux/deno-minilog",
+  "version": "0.1.0",
+  "exports": "./src/mod.ts"
+}
