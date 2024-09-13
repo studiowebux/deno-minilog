@@ -23,6 +23,7 @@ This logger outputs to the terminal in either `text` or `json` format,
 displaying messages with a prefix that includes the current local date and time.
 It allows users to easily toggle the enabled log level and change the output format,
 providing flexibility based on their preference or application needs.
+Introducing `fork` to isolate and manage logs within specific application segments for pinpoint troubleshooting and future reference.
 
 ---
 
@@ -56,7 +57,7 @@ You can set the format to `json`, *usually required with observability tools.*
 const jsonLogger = new Logger({ format: "json" });
 
 // Prints
-{"message":"...","level":"...","timestamp":"..."}
+{"message":"...","level":"...","timestamp":"...","id":"..."}
 ```
 
 **Trace option**
@@ -71,8 +72,8 @@ see `tests/test.ts` for other examples.
 This feature is useful to sort and isolate logs when wanting to troubleshoot part of the application.
 And to let the logs there (even in production) the Logger instance can isolate and hide those forked logger instance.
 
-`forkToPrint`: A list of the id to show, anything else is hidden.
-`hideFork`: Hide all forks and show only the "normal" logs.
+- `forkToPrint`: A list of the id to show, anything else is hidden.
+- `hideFork`: Hide all forks and show only the "normal" logs.
 
 See `tests/flow.ts` for the examples.
 
@@ -80,7 +81,7 @@ See `tests/flow.ts` for the examples.
 const logger = new Logger({ forkToPrint: ["my_fn_logs"] });
 ```
 
-**Prints:**
+*Prints:*
 
 ```bash
 9/13/2024, 4:37:22 PM DEBUG [my_fn_logs]:   myFn
@@ -97,7 +98,7 @@ const logger = new Logger({ forkToPrint: ["my_fn_logs"] });
 const logger = new Logger();
 ```
 
-**Prints:**
+*Prints:*
 
 ```bash
 9/13/2024, 4:36:43 PM INFO:   Application is starting...
@@ -119,7 +120,7 @@ const logger = new Logger();
 const logger = new Logger({ forkToPrint: [], hideForks: true });
 ```
 
-**Prints:**
+*Prints:*
 
 ```bash
 9/13/2024, 4:35:07 PM INFO:   Application is starting...
@@ -211,6 +212,8 @@ Distributed under the MIT License. See LICENSE for more information.
         src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
         alt="Buy Me A Coffee"
         style="height: 30px !important; width: 105px !important"
+        height="30"
+        width="105"
 /></a>
 <b> | </b>
 <a href="https://webuxlab.com" target="_blank"
@@ -218,6 +221,7 @@ Distributed under the MIT License. See LICENSE for more information.
         src="https://webuxlab-static.s3.ca-central-1.amazonaws.com/logoAmpoule.svg"
         alt="Webux Logo"
         style="height: 30px !important"
+        height="30"
 /> Webux Lab</a>
 <b> | </b>
 </div>
