@@ -1,8 +1,3 @@
-/**
- * A module providing a simple logger with customizable log levels and colors.
- * @module deno-minilog
- */
-
 import { Color } from "./colors.ts";
 
 type Level = "error" | "warn" | "info" | "debug" | "verbose" | "trace";
