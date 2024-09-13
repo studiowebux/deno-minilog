@@ -2,6 +2,8 @@
 
 <h2>Deno Minilog</h2>
 
+[![JSR](https://jsr.io/badges/@studiowebux/deno-minilog)](https://jsr.io/@studiowebux/deno-minilog)
+
 <p>The minimalistic logging companion for Deno projects.</p>
 
 <p align="center">
