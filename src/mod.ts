@@ -232,4 +232,4 @@ export default class Logger {
 /**
  * Logger Singleton to centralize the configuration
  */
-export const loggerInstance = new Logger();
+export const loggerInstance: Logger = new Logger();
