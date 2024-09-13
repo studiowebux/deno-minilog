@@ -24,6 +24,7 @@ displaying messages with a prefix that includes the current local date and time.
 It allows users to easily toggle the enabled log level and change the output format,
 providing flexibility based on their preference or application needs.
 Introducing `fork` to isolate and manage logs within specific application segments for pinpoint troubleshooting and future reference.
+Added support of `loggerInstance` to use a singleton pattern and centralize the logger configuration.
 
 ---
 
@@ -128,6 +129,17 @@ const logger = new Logger({ forkToPrint: [], hideForks: true });
 ```
 
 ---
+
+**Singleton**
+
+See `tests/instance` for an example.
+
+```ts
+import { loggerInstance } from "../../src/mod.ts";
+
+loggerInstance.setConfig({ debug: false });
+loggerInstance.info("Application is starting");
+```
 
 ### Releases and Github Actions
 

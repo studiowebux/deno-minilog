@@ -219,4 +219,17 @@ export default class Logger {
   formatError(message: Error): string {
     return `${Color(`${message.name}:`, "Bold")} ${message.message} ${Color("[stack]:", "Bold")} ${JSON.stringify(message.stack)}`;
   }
+
+  /**
+   * Setup the logger with new configuration
+   * Useful with the singleton
+   */
+  setConfig(config: Partial<Config>) {
+    if (config) this.config = { ...this.config, ...config };
+  }
 }
+
+/**
+ * Logger Singleton to centralize the configuration
+ */
+export const loggerInstance = new Logger();
