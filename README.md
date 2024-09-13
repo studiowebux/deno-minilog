@@ -16,7 +16,7 @@
 ## About
 
 A minimalistic logging tool designed specifically for use with Deno,
-supporting essential log levels such as `info`, `warn`, and `error`.
+supporting essential log levels such as `info`, `warn`, `error`, `debug`, `verbose`, `trace`.
 This logger outputs to the terminal in either `text` or `json` format,
 displaying messages with a prefix that includes the current local date and time.
 It allows users to easily toggle the enabled log level and change the output format,
@@ -36,6 +36,9 @@ logger.info("This is an info log");
 logger.info({ foo: "bar" });
 logger.error(new Error("Oops"))
 logger.warn("You should check the logs...")
+logger.debug("Debug message.")
+logger.verbose("Verbose message.")
+logger.trace("Message with trace.")
 ```
 
 ```ts
@@ -54,7 +57,72 @@ const jsonLogger = new Logger({ format: "json" });
 {"message":"...","level":"...","timestamp":"..."}
 ```
 
+**Trace option**
+
+This output will spread on multiple lines,
+so might not be the best in production environment where each line is an entry.
+
 see `tests/test.ts` for other examples.
+
+**Forks**
+
+This feature is useful to sort and isolate logs when wanting to troubleshoot part of the application.
+And to let the logs there (even in production) the Logger instance can isolate and hide those forked logger instance.
+
+`forkToPrint`: A list of the id to show, anything else is hidden.
+`hideFork`: Hide all forks and show only the "normal" logs.
+
+See `tests/flow.ts` for the examples.
+
+```ts
+const logger = new Logger({ forkToPrint: ["my_fn_logs"] });
+```
+
+**Prints:**
+
+```bash
+9/13/2024, 4:37:22 PM DEBUG [my_fn_logs]:   myFn
+9/13/2024, 4:37:22 PM DEBUG [my_fn_logs]:   My Function
+9/13/2024, 4:37:22 PM INFO [my_fn_logs]:   i'm doing stuff
+9/13/2024, 4:37:22 PM WARN [my_fn_logs]:   Oops, stuff is now weird
+9/13/2024, 4:37:22 PM VERBOSE [my_fn_logs]:   {"foo":"bar"}
+9/13/2024, 4:37:22 PM DEBUG [my_fn_logs]:   I'm done.
+```
+
+---
+
+```ts
+const logger = new Logger();
+```
+
+**Prints:**
+
+```bash
+9/13/2024, 4:36:43 PM INFO:   Application is starting...
+9/13/2024, 4:36:43 PM DEBUG [my_fn_logs]:   myFn
+9/13/2024, 4:36:43 PM DEBUG [my_fn_logs]:   My Function
+9/13/2024, 4:36:43 PM INFO [my_fn_logs]:   i'm doing stuff
+9/13/2024, 4:36:43 PM WARN [my_fn_logs]:   Oops, stuff is now weird
+9/13/2024, 4:36:43 PM VERBOSE [my_fn_logs]:   {"foo":"bar"}
+9/13/2024, 4:36:43 PM DEBUG [my_fn_logs]:   I'm done.
+9/13/2024, 4:36:43 PM DEBUG [my_second_fn]:   mySecondFn
+9/13/2024, 4:36:43 PM DEBUG [my_second_fn]:   My Second Function
+9/13/2024, 4:36:43 PM DEBUG [my_second_fn]:   I'm done.
+9/13/2024, 4:36:43 PM INFO:   Application has ended.
+```
+
+---
+
+```ts
+const logger = new Logger({ forkToPrint: [], hideForks: true });
+```
+
+**Prints:**
+
+```bash
+9/13/2024, 4:35:07 PM INFO:   Application is starting...
+9/13/2024, 4:35:07 PM INFO:   Application has ended.
+```
 
 ---
 

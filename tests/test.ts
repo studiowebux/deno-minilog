@@ -11,6 +11,10 @@ try {
   logger.error(e as Error);
 }
 
+logger.verbose("This is a verbose message.");
+logger.trace("This is a trace message.");
+logger.debug("This is a debug message.");
+
 const specialLogger = new Logger({ info: false, warn: true, error: true });
 specialLogger.info("should be hidden");
 specialLogger.warn("This is a warning", { someKey: "Some value" });
@@ -23,10 +27,36 @@ try {
   specialLogger.error(e as Error);
 }
 
-const jsonLogger = new Logger({ format: "json" });
-jsonLogger.info("should be hidden");
-jsonLogger.warn("This is a warning", { someKey: "Some value" });
-jsonLogger.warn({ foo: "bar" });
-jsonLogger.error(
+// Isolate logs output to the fork prints only
+const jsonLoggerSimple = new Logger({
+  format: "json",
+});
+jsonLoggerSimple.info("should be hidden");
+jsonLoggerSimple.warn("This is a warning", { someKey: "Some value" });
+jsonLoggerSimple.warn({ foo: "bar" });
+jsonLoggerSimple.error(
   new Error("An error occurred and should print only this message"),
 );
+jsonLoggerSimple.verbose("This is a verbose message.");
+jsonLoggerSimple.trace("This is a trace message.");
+jsonLoggerSimple.debug("This is a debug message.");
+
+console.log("Test with isolation:");
+// Isolate logs output to the fork prints only
+const jsonLogger = new Logger({
+  format: "json",
+  forkToPrint: ["testinf feat 1"],
+});
+jsonLogger.verbose("wont be shown.");
+jsonLogger.trace("wont be shown.");
+jsonLogger.debug("wont be shown.");
+
+const clog = jsonLogger.fork("testinf feat 1");
+clog.debug("This is a debug message.");
+jsonLogger.debug("In between, without ids");
+clog.debug(
+  "Im debugging stuff in between this section marked by the id to this other section",
+);
+clog.resetFork();
+
+jsonLogger.debug("After resetting the fork");
