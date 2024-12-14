@@ -1,4 +1,5 @@
 import { Color } from "./colors.ts";
+import { replacer } from "./util.ts";
 
 type Level = "error" | "warn" | "info" | "debug" | "verbose" | "trace";
 type Format = "json" | "text";
@@ -62,7 +63,7 @@ export default class Logger {
     let msg = "";
     args.forEach((arg) => {
       if (typeof arg !== "string" && !(arg instanceof Error)) {
-        msg += ` ${JSON.stringify(arg)}`;
+        msg += ` ${JSON.stringify(arg, replacer)}`;
       } else if (arg instanceof Error) {
         msg += `${arg.message}`;
       } else {
@@ -94,12 +95,15 @@ export default class Logger {
       );
     } else if (this.config.format === "json") {
       this.getConsoleFunction(level)(
-        JSON.stringify({
-          message: msg,
-          level: level,
-          timestamp: new Date().toLocaleString(),
-          id: this.id,
-        }),
+        JSON.stringify(
+          {
+            message: msg,
+            level: level,
+            timestamp: new Date().toLocaleString(),
+            id: this.id,
+          },
+          replacer,
+        ),
       );
     }
 

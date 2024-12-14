@@ -1,6 +1,6 @@
 {
   "name": "@studiowebux/deno-minilog",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "exports": "./src/mod.ts",
   "publish": {
     "include": ["LICENSE", "README.md", "src/**/*.ts"],
