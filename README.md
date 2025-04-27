@@ -17,42 +17,46 @@
 
 ## About
 
-A minimalistic logging tool designed specifically for use with Deno,
-supporting essential log levels such as `info`, `warn`, `error`, `debug`, `verbose`, `trace`.
-This logger outputs to the terminal in either `text` or `json` format,
-displaying messages with a prefix that includes the current local date and time.
-It allows users to easily toggle the enabled log level and change the output format,
-providing flexibility based on their preference or application needs.
-Introducing `fork` to isolate and manage logs within specific application segments for pinpoint troubleshooting and future reference.
-Added support of `loggerInstance` to use a singleton pattern and centralize the logger configuration.
+- A minimalistic logging tool designed specifically for use with Deno,
+  supporting essential log levels such as `info`, `warn`, `error`, `debug`,
+  `verbose`, `trace`.
+- This logger outputs to the terminal in either `text` or `json` format,
+  displaying messages with a prefix that includes the current local date and
+  time.
+- It allows users to easily toggle the enabled log level and change the output
+  format, providing flexibility based on their preference or application needs.
+- Introducing `fork` to isolate and manage logs within specific application
+  segments for pinpoint troubleshooting and future reference.
+- Added support of `loggerInstance` to use a singleton pattern and centralize
+  the logger configuration.
+- Optional Integration of OpenTelemetry to send logs to `Loki`.
 
 ---
 
 ## Installation and Usage
 
 1. Install deno: https://deno.com
-2. `deno add @studiowebux/deno-minilog`
-
+2. `deno add jsr:@studiowebux/deno-minilog`
 
 ```ts
 const logger = new Logger(); // Logs everything by default
 logger.info("This is an info log");
 logger.info({ foo: "bar" });
-logger.error(new Error("Oops"))
-logger.warn("You should check the logs...")
-logger.debug("Debug message.")
-logger.verbose("Verbose message.")
-logger.trace("Message with trace.")
+logger.error(new Error("Oops"));
+logger.warn("You should check the logs...");
+logger.debug("Debug message.");
+logger.verbose("Verbose message.");
+logger.trace("Message with trace.");
 ```
 
 ```ts
-const logger = new Logger({info: false});
+const logger = new Logger({ info: false });
 logger.info("This info wont be showed.");
-logger.error(new Error("Oops"))
-logger.warn("You should check the logs...")
+logger.error(new Error("Oops"));
+logger.warn("You should check the logs...");
 ```
 
-You can set the format to `json`, *usually required with observability tools.*
+You can set the format to `json`, _usually required with observability tools._
 
 ```ts
 const jsonLogger = new Logger({ format: "json" });
@@ -63,15 +67,16 @@ const jsonLogger = new Logger({ format: "json" });
 
 **Trace option**
 
-This output will spread on multiple lines,
-so might not be the best in production environment where each line is an entry.
+This output will spread on multiple lines, so might not be the best in
+production environment where each line is an entry.
 
 see `tests/test.ts` for other examples.
 
 **Forks**
 
-This feature is useful to sort and isolate logs when wanting to troubleshoot part of the application.
-And to let the logs there (even in production) the Logger instance can isolate and hide those forked logger instance.
+This feature is useful to sort and isolate logs when wanting to troubleshoot
+part of the application. And to let the logs there (even in production) the
+Logger instance can isolate and hide those forked logger instance.
 
 - `forkToPrint`: A list of the id to show, anything else is hidden.
 - `hideFork`: Hide all forks and show only the "normal" logs.
@@ -82,7 +87,7 @@ See `tests/flow.ts` for the examples.
 const logger = new Logger({ forkToPrint: ["my_fn_logs"] });
 ```
 
-*Prints:*
+_Prints:_
 
 ```bash
 9/13/2024, 4:37:22 PM DEBUG [my_fn_logs]:   myFn
@@ -99,7 +104,7 @@ const logger = new Logger({ forkToPrint: ["my_fn_logs"] });
 const logger = new Logger();
 ```
 
-*Prints:*
+_Prints:_
 
 ```bash
 9/13/2024, 4:36:43 PM INFO:   Application is starting...
@@ -121,7 +126,7 @@ const logger = new Logger();
 const logger = new Logger({ forkToPrint: [], hideForks: true });
 ```
 
-*Prints:*
+_Prints:_
 
 ```bash
 9/13/2024, 4:35:07 PM INFO:   Application is starting...
@@ -167,9 +172,9 @@ git push origin tags/X.Y.Z
 git checkout -b <feature|fix|release|chore|hotfix>/prefix-name
 ```
 
-> Your branch name must starts with [feature|fix|release|chore|hotfix] and use a / before the name;
-> Use hyphens as separator;
-> The prefix correspond to your Kanban tool id (e.g. abc-123)
+> Your branch name must starts with [feature|fix|release|chore|hotfix] and use a
+> / before the name; Use hyphens as separator; The prefix correspond to your
+> Kanban tool id (e.g. abc-123)
 
 **Keep your branch synced:**
 
