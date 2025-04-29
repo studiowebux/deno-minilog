@@ -30,6 +30,7 @@
 - Added support of `loggerInstance` to use a singleton pattern and centralize
   the logger configuration.
 - Optional Integration of OpenTelemetry to send logs to `Loki`.
+- Configurable error format using `withErrorTrace`.
 
 ---
 
@@ -132,6 +133,10 @@ _Prints:_
 9/13/2024, 4:35:07 PM INFO:   Application is starting...
 9/13/2024, 4:35:07 PM INFO:   Application has ended.
 ```
+
+---
+
+See the `tests/` directory for more examples.
 
 ---
 

@@ -15,6 +15,8 @@ type Config = Record<Level, boolean> & {
   otelSupport: boolean;
   loggerProvider: LoggerProvider | undefined;
   loggerName: string;
+  // Error
+  withErrorTrace: boolean;
 };
 
 /**
@@ -39,6 +41,7 @@ export default class Logger {
     otelSupport: false,
     loggerProvider: undefined,
     loggerName: "minilog",
+    withErrorTrace: false,
   };
   private id: string | undefined;
 
@@ -279,9 +282,15 @@ export default class Logger {
    * @returns {string} - The formatted error string.
    */
   formatError(message: Error): string {
-    return `${Color(`${message.name}:`, "Bold")} ${message.message} ${
-      Color("[stack]:", "Bold")
-    } ${JSON.stringify(message.stack)}`;
+    if (this.config.format === "text") {
+      return `${Color(`${message.name}:`, "Bold")} ${message.message}\n${
+        Color("[stack]:", "Bold")
+      } ${message.stack}`;
+    }
+
+    return `${message.name}: ${message.message} [stack] ${
+      JSON.stringify(message.stack)
+    }`;
   }
 
   /**
@@ -293,7 +302,11 @@ export default class Logger {
     let msg = "";
     if (typeof message !== "string" && !(message instanceof Error)) {
       msg += ` ${JSON.stringify(message, replacer)}`;
+    } else if (message instanceof Error && this.config.withErrorTrace) {
+      // expanding with the error name, message and stack.
+      msg += this.formatError(message);
     } else if (message instanceof Error) {
+      // Keeping only the error message.
       msg += `${message.message}`;
     } else {
       msg += ` ${message}`;

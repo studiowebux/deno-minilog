@@ -1,6 +1,6 @@
 {
   "name": "@studiowebux/deno-minilog",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "exports": "./src/mod.ts",
   "publish": {
     "include": ["LICENSE", "README.md", "src/**/*.ts"],
@@ -9,5 +9,8 @@
   "imports": {
     "@opentelemetry/api-logs": "npm:@opentelemetry/api-logs@^0.200.0",
     "@opentelemetry/sdk-logs": "npm:@opentelemetry/sdk-logs@^0.200.0"
+  },
+  "compilerOptions": {
+    "lib": ["dom", "deno.ns"]
   }
 }
